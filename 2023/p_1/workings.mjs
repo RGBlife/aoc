@@ -1,7 +1,13 @@
-const fs = require("fs");
-const path = require("path");
-const getFirstDigit = require("../../utils/getFirstDigit");
-const getLastDigit = require("../../utils/getLastDigit");
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
+import { convertToDigits } from "../../utils/convertToDigits.mjs";
+import { getFirstDigit } from "../../utils/getFirstDigit.mjs";
+import { getLastDigit } from "../../utils/getLastDigit.mjs";
+
+const __filename = fileURLToPath(import.meta.url);
+
+const __dirname = path.dirname(__filename);
 
 const filePath = path.join(__dirname, "inputs.txt");
 
@@ -20,16 +26,21 @@ function readTxtFile() {
 
 async function getDigits() {
   try {
-    const digits = await readTxtFile();
-    const doubleDigits = digits.map((line) => {
+    const allLines = await readTxtFile();
+    const formattedLines = convertToDigits(allLines);
+
+    const doubleDigits = formattedLines.map((line) => {
       const firstDigit = getFirstDigit(line);
       const lastDigit = getLastDigit(line);
 
       let con = 0;
 
       if (firstDigit) {
-        con = lastDigit ? firstDigit + lastDigit : firstDigit;
+        con = String(firstDigit) + String(lastDigit);
       }
+
+      console.log(con);
+
       return con;
     });
 
