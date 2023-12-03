@@ -6,7 +6,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const filePath = path.join(__dirname, "inputs.txt");
 
-const compareCubes = {
+const allocatedCubes = {
   red: 12,
   green: 13,
   blue: 14,
@@ -31,40 +31,19 @@ async function checkPossibleGames() {
 
   const possibleGamesIds = [];
 
-  let count = {
-    red: 0,
-    green: 0,
-    blue: 0,
-  };
+  listOfGames.forEach((game) => {
+    Object.entries(game).forEach(([gameId, plays]) => {
+      if (!isGameImpossible(plays)) {
+        possibleGamesIds.push(gameId);
+      }
+    });
+  });
 
-  for (let i = 0; i < listOfGames.length; i++) {
-    for (const key in listOfGames[i]) {
-      const value = listOfGames[i][key];
+  const sum = possibleGamesIds.reduce((acc, cur) => {
+    return acc + parseInt(cur);
+  }, 0);
 
-      value.forEach((play) => {
-        const playSplit = play.split(", ");
-        count = {
-          red: 0,
-          green: 0,
-          blue: 0,
-        };
-
-        playSplit.forEach((play) => {
-          const [number, colour] = play.split(" ");
-          if (count.hasOwnProperty(colour)) {
-            count[colour] += parseInt(number, 10);
-          }
-        });
-
-        // create functions for above
-        // compare count to compareCubes
-        // if less or equal, add ID to possibleGamesIds
-        // if not, continue
-        // at the end, sum possibleGamesIds and return
-
-      });
-    }
-  }
+  return sum;
 }
 
 function getListOfGames(txtList) {
@@ -80,4 +59,16 @@ function getListOfGames(txtList) {
   return listOfGames;
 }
 
-checkPossibleGames().then((res) => console.log("hey"));
+function isGameImpossible(plays) {
+  return plays.some((play) => isPlayImpossible(play));
+}
+
+function isPlayImpossible(play) {
+  const cubes = play.split(", ");
+  return cubes.some((cube) => {
+    const [number, colour] = cube.split(" ");
+    return parseInt(number, 10) > allocatedCubes[colour];
+  });
+}
+
+checkPossibleGames().then((res) => console.log(res));
