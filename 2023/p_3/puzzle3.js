@@ -1,10 +1,4 @@
-import fs from "fs";
-import path from "path";
-import { fileURLToPath } from "url";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const filePath = path.join(__dirname, "inputs.txt");
+import { readTxtFile } from "../../utils/readTxtFile.mjs";
 
 const allocatedCubes = {
   red: 12,
@@ -12,21 +6,8 @@ const allocatedCubes = {
   blue: 14,
 };
 
-function readTxtFile() {
-  return new Promise((resolve, reject) => {
-    fs.readFile(filePath, "utf-8", (err, fileContents) => {
-      if (err) {
-        reject("Error reading file: " + err);
-      } else {
-        const lines = fileContents.split(/\r?\n/);
-        resolve(lines);
-      }
-    });
-  });
-}
-
 async function checkPossibleGames() {
-  const rawTxtList = await readTxtFile();
+  const rawTxtList = await readTxtFile("../2023/p_3/inputs.txt");
   const listOfGames = getListOfGames(rawTxtList);
 
   const possibleGamesIds = [];
