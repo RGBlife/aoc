@@ -1,4 +1,4 @@
-import { readTxtFile } from "../../utils/readTxtFile.mjs";
+import { readTxtFile } from "../../../utils/readTxtFile.mjs";
 
 async function checkFewestCubes() {
   try {
@@ -24,14 +24,12 @@ async function checkFewestCubes() {
           });
         });
 
-        // console.log(plays)
       });
       let multiply = 1;
       for (const key in playedCubes) {
         multiply *= playedCubes[key];
       }
       powerCol.push(multiply);
-      //console.log(multiply)
       //game
     });
 
