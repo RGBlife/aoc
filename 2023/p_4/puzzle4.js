@@ -2,59 +2,47 @@ import { readTxtFile } from "../../utils/readTxtFile.mjs";
 
 async function checkFewestCubes() {
   try {
-    const rawTxtList = await readTxtFile("../2023/p_3/inputs.txt")
+    const rawTxtList = await readTxtFile("../2023/p_3/inputs.txt");
     const listOfGames = getListOfGames(rawTxtList);
-    
-    const powerCol = []
-    
-    
-    
+
+    const powerCol = [];
+
     listOfGames.forEach((game) => {
       const playedCubes = {
-      red: 0,
-  green: 0,
-  blue: 0,
-    }
-      
-    Object.entries(game).forEach(([gameId, plays]) => {
-      
-      
-      
-      plays.forEach((play)=>{
-        const cubes = play.split(", ");
-        cubes.forEach((cube)=>{
-          
-          const [number, colour] = cube.split(" ");
-          
-          playedCubes[colour] = Math.max(number, playedCubes[colour])
-          
-        })
-      })
-      
-      
-     
-     // console.log(plays)
-      
+        red: 0,
+        green: 0,
+        blue: 0,
+      };
+
+      Object.entries(game).forEach(([gameId, plays]) => {
+        plays.forEach((play) => {
+          const cubes = play.split(", ");
+          cubes.forEach((cube) => {
+            const [number, colour] = cube.split(" ");
+
+            playedCubes[colour] = Math.max(number, playedCubes[colour]);
+          });
+        });
+
+        // console.log(plays)
+      });
+      let multiply = 1;
+      for (const key in playedCubes) {
+        multiply *= playedCubes[key];
+      }
+      powerCol.push(multiply);
+      //console.log(multiply)
+      //game
     });
-    let multiply = 1
-    for (const key in playedCubes) {
-      multiply *= playedCubes[key]
-    }
-    powerCol.push(multiply)
-    //console.log(multiply)
-    //game
-  });
-  
-  const sum = powerCol.reduce((acc, cur) => {
-    return acc + parseInt(cur);
-  }, 0);
-  
-  return sum
-    
-  } catch (err){
-    console.log(err)
+
+    const sum = powerCol.reduce((acc, cur) => {
+      return acc + parseInt(cur);
+    }, 0);
+
+    return sum;
+  } catch (err) {
+    console.log(err);
   }
-  
 }
 
 function getListOfGames(txtList) {
@@ -70,6 +58,6 @@ function getListOfGames(txtList) {
   return listOfGames;
 }
 
-
-  
-checkFewestCubes().then((res)=>{console.log(res)})
+checkFewestCubes().then((res) => {
+  console.log(res);
+});
