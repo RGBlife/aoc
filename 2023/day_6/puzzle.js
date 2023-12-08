@@ -35,10 +35,37 @@ function part1() {
     }
     winsByRace.push(wins);
   }
-
+  console.log(winsByRace);
   return winsByRace.reduce((acc, curr) => acc * curr);
 }
 
 console.log("part 1 result:", part1());
 
+// Part 1
 // Attempt 1 - 393120 (correct)
+
+function part2() {
+  let winsByRace = [];
+
+  const time = Number(times.reduce((accu, curr) => accu + String(curr)));
+  const recordDistance = Number(
+    distances.reduce((accu, curr) => accu + String(curr))
+  );
+  let wins = 0;
+
+  for (let j = 0; j < time; j++) {
+    let timeleft = +(time - j);
+    const disTraveled = j * timeleft;
+
+    if (disTraveled > recordDistance) {
+      wins++;
+    }
+  }
+  winsByRace.push(wins);
+  return winsByRace.reduce((acc, curr) => acc + curr);
+}
+
+console.log("part 2 result:", part2());
+
+// Part 2
+// Atempt 1 - 36872656 (correct)
